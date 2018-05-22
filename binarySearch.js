@@ -141,21 +141,38 @@ function isBST(tree){
         return false;
     } 
 }
-function thirdLargest(BST){
-    let rightCounter=0;
-    if(BST == null) {
-        return;
-    }
-    else{
-        // let max = BST._findMax();
-        //take the max and go up 2 to the third largest 
-        //
-        console.log(max);
-        if(rightCounter === 3){
-            return BST.right;
-        }
-    }
+let temp = new BinarySearchTree();
+function thirdLargest(tree) {
+  if (tree) {
+    thirdLargest(tree.left);
+    
+    temp.insert(tree.key);
+    thirdLargest(tree.right);
+  }
+  
+  let curr = temp;
+
+  while (curr.right) {
+    curr = curr.right;
+  }
+
+  if (curr.parent && curr.parent.parent) {
+    return curr.parent.parent.key;
+  }
 }
+function balancedBST(BST){
+    if(!BST) return;
+
+    let leftHeight = height(BST.left);
+    let rightHeight = height(BST.right);
+
+    let absVal = (Math.abs(leftHeight - rightHeight));
+    if(absVal <= 1){
+        return true
+    }
+    return false;
+}
+
 function main(){
  let BST = new BinarySearchTree();
     BST.insert('3');
@@ -170,6 +187,7 @@ function main(){
     //console.log(height(BST));
     //console.log(isBST(BST));
     console.log(thirdLargest(BST));
+    console.log(balancedBST(BST));
 }
 
 main();
